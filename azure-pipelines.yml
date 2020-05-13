@@ -20,7 +20,7 @@ steps:
     location: 'West US 2'
     templateLocation: 'Linked artifact'
     csmFile: 'azureresources/azuredeploy.json'
-    overrideParameters: '-projectName djh20200513 -linkedTemplateUri https://raw.githubusercontent.com/dhorrigan/Djh20200513/master/azureresources/linkedStorageAccount.json'
+    overrideParameters: '-projectName djh20200513'
     deploymentMode: 'Incremental'
     deploymentName: 'DeployPipelineTemplate'
 
