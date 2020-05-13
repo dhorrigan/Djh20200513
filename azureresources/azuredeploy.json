@@ -75,22 +75,6 @@
         "targetWorkerCount": 0,
         "targetWorkerSizeId": 0
       }
-    },
-    {
-      "type": "Microsoft.Web/sites",
-      "apiVersion": "2018-11-01",
-      "name": "[variables('webAppName')]",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
-      ],
-      "kind": "app",
-      "properties": {
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
-        "siteConfig": {
-          "linuxFxVersion": "[parameters('linuxFxVersion')]"
-        }
-      }
     }
   ],
   "outputs": {
