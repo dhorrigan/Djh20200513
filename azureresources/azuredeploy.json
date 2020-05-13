@@ -17,10 +17,21 @@
         "description": "Specify a location for the resources."
       }
     },
-    "linkedTemplateUri": {
+    "storageSKU": {
       "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_RAGRS",
+        "Standard_ZRS",
+        "Premium_LRS",
+        "Premium_ZRS",
+        "Standard_GZRS",
+        "Standard_RAGZRS"
+      ],
       "metadata": {
-        "description": "The Uri of the linked template."
+        "description": "Specify the storage account type."
       }
     }
   },
@@ -30,24 +41,90 @@
   },
   "resources": [
     {
-      "name": "linkedTemplate",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2018-05-01",
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2019-04-01",
+      "name": "[variables('storageAccountName')]",
+      "location": "[parameters('location')]",
+	  "tags":{
+		  "displayName": "MyBlobStorage"
+	  },
+      "sku": {
+        "name": "[parameters('storageSKU')]"
+      },
+      "kind": "StorageV2",
       "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[parameters('linkedTemplateUri')]"
-        },
-        "parameters": {
-          "storageAccountName": {
-            "value": "[variables('storageAccountName')]"
-          },
-          "location": {
-            "value": "[parameters('location')]"
-          }
-        }
+		"networkAcls": {
+			"bypass": "AzureServices",
+			"virtualNetworkRules": [],
+			"ipRules": [],
+			"defaultAction": "Allow"
+		},
+        "supportsHttpsTrafficOnly": true,
+		"encryption": {
+			"services": {
+				"file": {
+					"keyType": "Account",
+					"enabled": true
+				},
+				"blob": {
+					"keyType": "Account",
+					"enabled": true
+				}
+			},
+			"keySource": "Microsoft.Storage"
+		},
+		"accessTier": "Hot"
       }
     },
+	{
+		"type": "Microsoft.Storage/storageAccounts/blobServices",
+		"apiVersion": "2019-06-01",
+		"name": "[concat(variables('storageAccountName'), '/default')]",
+		"dependsOn": [
+			"[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+		],
+		"sku": {
+			"name": "Standard_LRS",
+			"tier": "Standard"
+		},
+		"properties": {
+			"cors": {
+				"corsRules": []
+			},
+			"deleteRetentionPolicy": {
+				"enabled": false
+			}
+		}
+	},
+	{
+		"type": "Microsoft.Storage/storageAccounts/fileServices",
+		"apiVersion": "2019-06-01",
+		"name": "[concat(variables('storageAccountName'), '/default')]",
+		"dependsOn": [
+			"[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+		],
+		"sku": {
+			"name": "Standard_LRS",
+			"tier": "Standard"
+		},
+		"properties": {
+			"cors": {
+				"corsRules": []
+			}
+		}
+	},
+	{
+		"type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+		"apiVersion": "2019-06-01",
+		"name": "[concat(variables('storageAccountName'), '/default/$web')]",
+		"dependsOn": [
+			"[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
+			"[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+		],
+		"properties": {
+			"publicAccess": "Blob"
+		}
+	},
     {
       "type": "Microsoft.Web/serverfarms",
       "apiVersion": "2016-09-01",
@@ -68,11 +145,5 @@
         "targetWorkerSizeId": 0
       }
     }
-  ],
-  "outputs": {
-    "storageEndpoint": {
-      "type": "object",
-      "value": "[reference('linkedTemplate').outputs.storageEndpoint.value]"
-    }
-  }
+  ]
 }
