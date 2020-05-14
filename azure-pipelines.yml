@@ -44,7 +44,7 @@ steps:
     azureSubscription: Djh20200513ReleaseSC
     resourceGroupName: Djh20200513QaGroup
     location: 'West US 2'
-    csmFile: '$(System.DefaultWorkingDirectory)/drop/drop/azureresources/linkedStorageAccount.json'
+    csmFile: '$(Build.DefaultWorkingDirectory)/drop/drop/azureresources/linkedStorageAccount.json'
 
 - task: AzureCLI@1
   displayName: 'Azure CLI '
@@ -56,7 +56,7 @@ steps:
 - task: AzureFileCopy@3
   displayName: 'AzureBlob File Copy'
   inputs:
-    SourcePath: '$(System.DefaultWorkingDirectory)/drop/drop/website'
+    SourcePath: '$(Build.DefaultWorkingDirectory)/drop/drop/website'
     azureSubscription: 'Pay-As-You-Go (2f106c03-9b32-42ee-be11-99d0286aba1a)'
     Destination: AzureBlob
     storage: aagtrainingstore
