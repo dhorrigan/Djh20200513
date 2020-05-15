@@ -47,7 +47,7 @@
       "location": "[parameters('location')]",
       "tags": {
         "displayName": "MyBlobStorage",
-        "releaseId": "ver20200513.8"
+        "releaseId": "ver20200514.1"
       },
       "sku": {
         "name": "[parameters('storageSKU')]"
