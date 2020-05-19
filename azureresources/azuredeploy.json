@@ -46,8 +46,9 @@
       "name": "[variables('storageAccountName')]",
       "location": "[parameters('location')]",
       "tags": {
-        "displayName": "MyBlobStorage CICD no Content",
-        "releaseId": "ver20200519.3"
+        "displayName": "CICD no Content",
+        "releaseId": "ver20200519.3",
+        "site": "YAML CICD noContent"
       },
       "sku": {
         "name": "[parameters('storageSKU')]"
