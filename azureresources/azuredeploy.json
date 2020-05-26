@@ -47,7 +47,7 @@
       "location": "[parameters('location')]",
       "tags": {
         "displayName": "CICD no Content",
-        "releaseId": "ver20200521.1",
+        "releaseId": "ver20200526.0",
         "site": "YAML CICD noContent"
       },
       "sku": {
