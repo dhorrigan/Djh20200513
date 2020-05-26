@@ -51,18 +51,15 @@
             "Standard_Verizon",
             "Premium_Verizon"
         ]
-    },
-    "endpointOriginHostName":{
-      "type":"string",
-      "defaultValue": "djh20200513store.z5.web.core.windows.net"
     }
   },
   "variables": {
     "storageAccountName": "[concat(parameters('projectName'), 'store')]",
+    "endpointOriginHostName":"[concat(parameters('projectName'), 'store.z5.web.core.windows.net')]",
     "appServicePlanName": "[concat(parameters('projectName'), '-plan')]",
     "cdnProfileName": "[concat(parameters('projectName'), '-cdnprofile')]",
-    "cdnEndpointName": "[replace(toLower(parameters('endpointOriginHostName')), '.', '-')]",
-    "cdnOriginHostName": "[parameters('endpointOriginHostName')]"
+    "cdnEndpointName": "[replace(toLower(variables('endpointOriginHostName')), '.', '-')]",
+    "cdnOriginHostName": "[variables('endpointOriginHostName')]"
   },
   "resources": [
     {
@@ -153,7 +150,7 @@
       "location": "[parameters('location')]",
       "tags": {
         "displayName": "CICD no Content",
-        "releaseId": "ver20200526.2",
+        "releaseId": "ver20200526.3",
         "site": "YAML CICD noContent"
       },
       "sku": {
