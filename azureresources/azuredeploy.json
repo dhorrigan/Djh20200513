@@ -17,6 +17,14 @@
         "description": "Specify a location for the resources."
       }
     },
+    "cdnProfileLocation": {
+      "type": "string",
+      "defaultValue": "westcentralus",
+      "metadata": {
+        "description": "try [resourceGroup().location] with AAG."
+      }
+
+    },
     "storageSKU": {
       "type": "string",
       "defaultValue": "Standard_LRS",
@@ -60,7 +68,7 @@
     {
       "type": "Microsoft.Cdn/profiles",
       "apiVersion": "2017-10-12",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('cdnProfileLocation')]",
       "name": "[variables('cdnProfileName')]",
       "sku": {
           "name": "[parameters('cdnProfileSku')]"
@@ -73,7 +81,7 @@
       ],
       "type": "Microsoft.Cdn/profiles/endpoints",
       "apiVersion": "2017-10-12",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('cdnProfileLocation')]",
       "name": "[concat(variables('cdnProfileName'), '/', variables('cdnEndpointName'))]",
       "properties": {
         "hostName": "[concat(variables('cdnEndpointName'), '.azureedge.net')]",
