@@ -153,7 +153,7 @@
       "location": "[parameters('location')]",
       "tags": {
         "displayName": "CICD no Content",
-        "releaseId": "ver20200526.1",
+        "releaseId": "ver20200526.2",
         "site": "YAML CICD noContent"
       },
       "sku": {
